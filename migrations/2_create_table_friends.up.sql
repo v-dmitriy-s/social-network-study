@@ -1,0 +1,7 @@
+CREATE TABLE IF NOT EXISTS friends (
+    user_id INTEGER UNSIGNED NOT NULL,
+    friend_id INTEGER UNSIGNED NOT NULL,
+    CONSTRAINT user_fk FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
+    CONSTRAINT friend_fk FOREIGN KEY (friend_id) REFERENCES users (id) ON DELETE CASCADE,
+    PRIMARY KEY(user_id, friend_id)
+) ENGINE=InnoDB;

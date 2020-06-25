@@ -1,0 +1,13 @@
+# Server configurations
+server:
+  host: localhost
+  port: 8080
+
+# Database credentials
+database:
+  user: root
+  pass: root
+  host: localhost
+  port: 3306
+  name: social_network
+
