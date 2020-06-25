@@ -1,0 +1,7 @@
+.git
+.cache
+**/node_modules
+*.md
+!README*.md
+README-secret.md
+**/build

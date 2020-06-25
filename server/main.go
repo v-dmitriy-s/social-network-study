@@ -42,10 +42,10 @@ func main() {
 	api.HandleFunc("/friends", user.PostAddFriend).Methods("POST")
 	api.HandleFunc("/friends", user.DeleteFriend).Methods("DELETE")
 
-	router.PathPrefix("/static/").Handler(http.StripPrefix("/static/", http.FileServer(http.Dir("./public/build/static/"))))
+	router.PathPrefix("/static/").Handler(http.StripPrefix("/static/", http.FileServer(http.Dir("./html/static/"))))
 
 	router.PathPrefix("/").HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		http.ServeFile(w, r,"./public/build/index.html")
+		http.ServeFile(w, r,"./html/index.html")
 	})
 
 	port := cfg.Server.Port

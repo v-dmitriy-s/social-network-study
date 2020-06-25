@@ -246,7 +246,9 @@ async function restGet(path, params = null, config = {}) {
 const getConfig = async (headers) => {
     const token = await getToken();
     return {
-        baseURL: process.env.REACT_APP_BACKEND_API_BASE_URL,
+        baseURL:  process.env.NODE_ENV === 'production' ?
+            process.env.REACT_APP_BACKEND_API_BASE_URL_PROD :
+            process.env.REACT_APP_BACKEND_API_BASE_URL_DEV,
         headers: {
             'Content-Type': 'application/json',
             Authorization: token ? token : "",
