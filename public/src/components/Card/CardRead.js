@@ -20,16 +20,15 @@ export default function CardRead({userId}) {
     });
 
     useEffect(() => {
+        async function fetchUser() {
+            const user = await getUser(decodeId(userId)[0]);
+            setUser({
+                ...user,
+                birthDay: new Date(user.birthDay)
+            });
+        }
         fetchUser().catch(error => console.error(error));
     }, [userId]);
-
-    async function fetchUser() {
-        const user = await getUser(decodeId(userId)[0]);
-        setUser({
-            ...user,
-            birthDay: new Date(user.birthDay)
-        });
-    }
 
     return (
         <React.Fragment>

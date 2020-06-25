@@ -29,6 +29,17 @@ export default function CardEdit({userId, onSave}) {
     const [saveButtonDisabled, setSaveButtonDisabled] = useState(false);
 
     useEffect(() => {
+        async function fetchUser() {
+            const {login, firstName, lastName, city, gender, birthDay, interests} =
+                await getUser(decodeId(userId)[0]);
+            setGender(gender);
+            setLogin(login);
+            setFirstName(firstName);
+            setLastName(lastName);
+            setCity(city);
+            setBirthDay(new Date(birthDay));
+            setInterests(interests);
+        }
         fetchUser().catch(error => console.error(error));
     }, [userId]);
 
@@ -39,18 +50,6 @@ export default function CardEdit({userId, onSave}) {
             setSaveButtonDisabled(false);
         }
     }, [loginError, firstNameError, lastNameError, birthDayError]);
-
-    async function fetchUser() {
-        const {login, firstName, lastName, city, gender, birthDay, interests} =
-            await getUser(decodeId(userId)[0]);
-        setGender(gender);
-        setLogin(login);
-        setFirstName(firstName);
-        setLastName(lastName);
-        setCity(city);
-        setBirthDay(new Date(birthDay));
-        setInterests(interests);
-    }
 
     const handleGenderChange = (event) => {
         setGender(event.target.value);

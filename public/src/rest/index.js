@@ -39,7 +39,7 @@ apiClient.interceptors.response.use(
  * @returns {Promise<Response>}
  */
 export function auth(username, password) {
-    return restPost('singin', {login: username, password: password});
+    return restPost(`${process.env.REACT_APP_BACKEND_API_VERSION}/singin`, {login: username, password: password});
 }
 
 /**
@@ -48,7 +48,7 @@ export function auth(username, password) {
  * @returns {Promise<Response>}
  */
 export function register(user) {
-    return restPost('singup', user);
+    return restPost(`${process.env.REACT_APP_BACKEND_API_VERSION}/singup`, user);
 }
 
 /**
@@ -56,7 +56,7 @@ export function register(user) {
  * @returns {Promise<*>}
  */
 export function getCurrentUser() {
-    return restGet('api/v1/current-user').then(response => response.data);
+    return restGet(`${process.env.REACT_APP_BACKEND_API_VERSION}/current-user`).then(response => response.data);
 }
 
 /**
@@ -65,7 +65,7 @@ export function getCurrentUser() {
  * @returns {Promise<*>}
  */
 export function getUser(id) {
-    return restGet(`api/v1/users/${id}`).then(response => response.data);
+    return restGet(`${process.env.REACT_APP_BACKEND_API_VERSION}/users/${id}`).then(response => response.data);
 }
 
 /**
@@ -74,7 +74,7 @@ export function getUser(id) {
  * @returns {Promise<*>}
  */
 export function checkLogin(login) {
-    return restGet(`singup/${login}`).then(response => response.data);
+    return restGet(`${process.env.REACT_APP_BACKEND_API_VERSION}/singup/${login}`).then(response => response.data);
 }
 
 /**
@@ -88,7 +88,7 @@ export function getFriends(id, search) {
         id,
         search
     }
-    return restGet(`api/v1/friends`, params).then(response => response.data);
+    return restGet(`${process.env.REACT_APP_BACKEND_API_VERSION}/friends`, params).then(response => response.data);
 }
 
 /**
@@ -102,7 +102,7 @@ export function getUnknownUsers(id, search) {
         id,
         search
     }
-    return restGet(`api/v1/friends/unknown`, params).then(response => response.data);
+    return restGet(`${process.env.REACT_APP_BACKEND_API_VERSION}/friends/unknown`, params).then(response => response.data);
 }
 
 /**
@@ -112,7 +112,7 @@ export function getUnknownUsers(id, search) {
  * @returns {Promise<unknown>}
  */
 export function addFriend(userId, friendId) {
-    return restPost(`api/v1/friends`, {userId, friendId});
+    return restPost(`${process.env.REACT_APP_BACKEND_API_VERSION}/friends`, {userId, friendId});
 }
 
 /**
@@ -121,7 +121,7 @@ export function addFriend(userId, friendId) {
  * @returns {Promise}
  */
 export function saveUser(user) {
-    return restPut(`api/v1/users`, user);
+    return restPut(`${process.env.REACT_APP_BACKEND_API_VERSION}/users`, user);
 }
 
 /**
@@ -130,7 +130,7 @@ export function saveUser(user) {
  * @returns {Promise}
  */
 export function deleteUser(id) {
-    return restDelete(`api/v1/users/${id}`);
+    return restDelete(`${process.env.REACT_APP_BACKEND_API_VERSION}/users/${id}`);
 }
 
 /**
@@ -140,7 +140,7 @@ export function deleteUser(id) {
  * @returns {Promise}
  */
 export function removeFriend(userId, friendId) {
-    return restDelete(`api/v1/friends`, {userId, friendId});
+    return restDelete(`${process.env.REACT_APP_BACKEND_API_VERSION}/friends`, {userId, friendId});
 }
 
 /**

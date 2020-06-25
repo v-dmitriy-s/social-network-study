@@ -25,9 +25,11 @@ func main() {
 	credentials := handlers.AllowCredentials()
 	exposedHeaders := handlers.ExposedHeaders(allowHeaders)
 
-	router.HandleFunc("/singin", user.SingIn).Methods("POST")
-	router.HandleFunc("/singup", user.SingUp).Methods("POST")
-	router.HandleFunc("/singup/{login}", user.GetCheckLogin).Methods("GET")
+	apiRoot := router.PathPrefix("/api/v1").Subrouter()
+	apiRoot.HandleFunc("/singin", user.SingIn).Methods("POST")
+	apiRoot.HandleFunc("/singup", user.SingUp).Methods("POST")
+	apiRoot.HandleFunc("/singup/{login}", user.GetCheckLogin).Methods("GET")
+
 
 	api := router.PathPrefix("/api/v1").Subrouter()
 	api.Use(auth.Secure)
@@ -39,6 +41,12 @@ func main() {
 	api.HandleFunc("/friends", user.GetFriends).Methods("GET")
 	api.HandleFunc("/friends", user.PostAddFriend).Methods("POST")
 	api.HandleFunc("/friends", user.DeleteFriend).Methods("DELETE")
+
+	router.PathPrefix("/static/").Handler(http.StripPrefix("/static/", http.FileServer(http.Dir("./public/build/static/"))))
+
+	router.PathPrefix("/").HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r,"./public/build/index.html")
+	})
 
 	port := cfg.Server.Port
 	log.Printf("Server was started on port: %s", port)

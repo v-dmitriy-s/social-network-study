@@ -14,17 +14,16 @@ import Forbidden from "./pages/Forbidden";
 export default function App() {
     const [auth, dispatch] = useContext(AuthContext);
 
-    async function fetchCurrentUser() {
-        if (hasToken()) {
-            const currentUser = await getCurrentUser();
-            dispatch({type: SET_CURRENT_USER, payload: currentUser});
-        }
-    }
-
     useEffect(() => {
+        async function fetchCurrentUser() {
+            if (hasToken()) {
+                const currentUser = await getCurrentUser();
+                dispatch({type: SET_CURRENT_USER, payload: currentUser});
+            }
+        }
         fetchCurrentUser()
             .catch(error => console.error(error));
-    }, []);
+    }, [dispatch]);
 
     return (
         <React.Fragment>
