@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"github.com/gorilla/mux"
 	"net/http"
-	"network-test/model/auth"
+	"social-network-study/model/auth"
 	"strconv"
 )
 

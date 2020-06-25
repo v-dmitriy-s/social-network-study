@@ -6,9 +6,9 @@ import (
 	"github.com/gorilla/mux"
 	"log"
 	"net/http"
-	"network-test/config"
-	"network-test/model/auth"
-	"network-test/model/user"
+	"social-network-study/config"
+	"social-network-study/model/auth"
+	"social-network-study/model/user"
 )
 
 func main() {

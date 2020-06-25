@@ -3,7 +3,7 @@ package user
 import (
 	"fmt"
 	"golang.org/x/crypto/bcrypt"
-	"network-test/config"
+	"social-network-study/config"
 	"strings"
 )
 
