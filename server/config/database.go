@@ -9,6 +9,7 @@ import (
 	"github.com/golang-migrate/migrate/v4/database/mysql"
 	_ "github.com/golang-migrate/migrate/v4/source/file"
 	"log"
+	"os"
 	"time"
 )
 
@@ -36,7 +37,12 @@ func ConnectDataBase(cfg *Config) *sql.DB {
 	flag.Parse()
 
 	// Connecting database
-	url := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s",username, password, host, port, database)
+
+	url := os.Getenv("DATABASE_URL")
+	if url == "" {
+		url = fmt.Sprintf("%s:%s@tcp(%s:%s)/%s",username, password, host, port, database)
+	}
+
 	log.Printf("DATABASE_URL %+v", url)
 	var err error
 	db, err = sql.Open("mysql", url)
