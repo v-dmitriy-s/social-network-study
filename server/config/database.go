@@ -36,8 +36,8 @@ func ConnectDataBase(cfg *Config) *sql.DB {
 		"Directory where the migration files are located?")
 	flag.Parse()
 	// Connecting database
-	url := os.Getenv("CLEARDB_DATABASE_URL")
-	log.Printf("CLEARDB_DATABASE_URL %+v", url)
+	url := os.Getenv("DATABASE_URL")
+	log.Printf("DATABASE_URL %+v", url)
 	//if url == "" {
 	//	url = fmt.Sprintf("%s:%s@tcp(%s:%s)/%s",username, password, host, port, database)
 	//}
