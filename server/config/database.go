@@ -27,20 +27,20 @@ func ConnectDataBase(cfg *Config) *sql.DB {
 		return db
 	}
 	// Get configuration
-	username := cfg.Database.Username
-	password := cfg.Database.Password
-	host := cfg.Database.Host
-	port := cfg.Database.Port
+	//username := cfg.Database.Username
+	//password := cfg.Database.Password
+	//host := cfg.Database.Host
+	//port := cfg.Database.Port
 	database := cfg.Database.Name
 	migrationDir := flag.String("migration.files", "./migrations",
 		"Directory where the migration files are located?")
 	flag.Parse()
 	// Connecting database
-	url := os.Getenv("DATABASE_URL")
-	log.Printf("DATABASE_URL %+v", url)
-	if url == "" {
-		url = fmt.Sprintf("%s:%s@tcp(%s:%s)/%s",username, password, host, port, database)
-	}
+	url := os.Getenv("CLEARDB_DATABASE_URL")
+	log.Printf("CLEARDB_DATABASE_URL %+v", url)
+	//if url == "" {
+	//	url = fmt.Sprintf("%s:%s@tcp(%s:%s)/%s",username, password, host, port, database)
+	//}
 	log.Printf("%+v", url)
 	var err error
 	db, err = sql.Open("mysql", url)
