@@ -13,7 +13,7 @@ import (
 
 func main() {
 	cfg := config.InitConfig()
-	log.Printf("%+v", cfg)
+	//log.Printf("%+v", cfg)
 	dataBase := config.ConnectDataBase(cfg)
 	defer dataBase.Close()
 

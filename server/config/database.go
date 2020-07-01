@@ -37,10 +37,11 @@ func ConnectDataBase(cfg *Config) *sql.DB {
 	flag.Parse()
 	// Connecting database
 	url := os.Getenv("DATABASE_URL")
+	log.Printf("DATABASE_URL %+v", url)
 	if url == "" {
 		url = fmt.Sprintf("%s:%s@tcp(%s:%s)/%s",username, password, host, port, database)
 	}
-
+	log.Printf("%+v", url)
 	var err error
 	db, err = sql.Open("mysql", url)
 	if err != nil {
