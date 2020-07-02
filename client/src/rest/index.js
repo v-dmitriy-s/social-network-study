@@ -17,6 +17,7 @@ apiClient.interceptors.response.use(
                     if (window.location.pathname === '/login') {
                         return Promise.resolve(response);
                     } else {
+                        clearToken();
                         window.location.replace('/login');
                     }
                     break;
