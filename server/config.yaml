@@ -1,7 +1,6 @@
 # Server configurations
 server:
-  host: localhost
-  port: 33500
+  port: 8080
 
 # Database credentials
 database:

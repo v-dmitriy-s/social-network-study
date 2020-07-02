@@ -6,7 +6,6 @@ import (
 	"github.com/gorilla/mux"
 	"log"
 	"net/http"
-	"os"
 	"social-network-study/config"
 	"social-network-study/model/auth"
 	"social-network-study/model/user"
@@ -14,7 +13,7 @@ import (
 
 func main() {
 	cfg := config.InitConfig()
-	//log.Printf("%+v", cfg)
+	log.Printf("%+v", cfg)
 	dataBase := config.ConnectDataBase(cfg)
 	defer dataBase.Close()
 
@@ -49,7 +48,7 @@ func main() {
 		http.ServeFile(w, r,"./html/index.html")
 	})
 
-	port := os.Getenv("PORT")//cfg.Server.Port
+	port := cfg.Server.Port
 	log.Printf("Server was started on port: %s", port)
 	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%s", port), handlers.CORS(headers, methods, origins, credentials, exposedHeaders)(router)))
 }

@@ -2,28 +2,26 @@ package config
 
 import (
 	"fmt"
-	"github.com/kelseyhightower/envconfig"
 	"gopkg.in/yaml.v2"
 	"os"
 )
 
 type Config struct {
 	Server struct {
-		Host string `yaml:"host",envconfig:"SERVER_HOST"`
-		Port string `yaml:"port",envconfig:"SERVER_PORT"`
+		Port string `yaml:"port"`
 	} `yaml:"server"`
 	Database struct {
-		Username string `yaml:"user",envconfig:"DB_USERNAME"`
-		Password string `yaml:"pass",envconfig:"DB_PASSWORD"`
-		Host string `yaml:"host",envconfig:"DB_HOST"`
-		Port string `yaml:"port",envconfig:"DB_PORT"`
-		Name string `yaml:"name",envconfig:"DB_NAME"`
+		Username string `yaml:"user"`
+		Password string `yaml:"pass"`
+		Host     string `yaml:"host"`
+		Port     string `yaml:"port"`
+		Name     string `yaml:"name"`
 	} `yaml:"database"`
 }
 
 /**
 Init configuration
- */
+*/
 func InitConfig() *Config {
 	cfg := new(Config)
 	readConfigFile(cfg)
@@ -43,7 +41,7 @@ func readConfigFile(cfg *Config) {
 	defer f.Close()
 
 	decoder := yaml.NewDecoder(f)
-	err = decoder.Decode(cfg)
+	err = decoder.Decode(&cfg)
 	if err != nil {
 		processError(err)
 	}
@@ -53,9 +51,30 @@ func readConfigFile(cfg *Config) {
 Read configuration enviroments
 */
 func readEnv(cfg *Config) {
-	err := envconfig.Process("", cfg)
-	if err != nil {
-		processError(err)
+	port := os.Getenv("PORT")
+	dbUsername := os.Getenv("DB_USERNAME")
+	dbPassword := os.Getenv("DB_PASSWORD")
+	dbHost := os.Getenv("DB_HOST")
+	dbPort := os.Getenv("DB_PORT")
+	dbName := os.Getenv("DB_NAME")
+
+	if port != "" {
+		cfg.Server.Port = port
+	}
+	if dbUsername != "" {
+		cfg.Database.Username = dbUsername
+	}
+	if dbPassword != "" {
+		cfg.Database.Password = dbPassword
+	}
+	if dbHost != "" {
+		cfg.Database.Host = dbHost
+	}
+	if dbPort != "" {
+		cfg.Database.Port = dbPort
+	}
+	if dbName != "" {
+		cfg.Database.Name = dbName
 	}
 }
 
