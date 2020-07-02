@@ -14,12 +14,12 @@ RUN GENERATE_SOURCEMAP=false yarn build
 # Final stage build, this will be the container
 # that we will deploy to production
 FROM alpine:latest
-#ENV PORT 33500
+ENV PORT 53372
 RUN apk --no-cache add ca-certificates
 COPY --from=go_builder /main ./
 COPY --from=go_builder /app/server/config.yaml ./
 COPY --from=go_builder /app/server/migrations ./migrations
 COPY --from=node_builder /build ./html
 RUN chmod +x ./main
-#EXPOSE 33500
+EXPOSE $PORT
 CMD ./main
