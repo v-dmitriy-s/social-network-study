@@ -20,5 +20,5 @@ COPY --from=go_builder /app/server/config.yaml ./
 COPY --from=go_builder /app/server/migrations ./migrations
 COPY --from=node_builder /build ./html
 RUN chmod +x ./main
-EXPOSE 8080
+EXPOSE 33500
 CMD ./main
