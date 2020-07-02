@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
@@ -29,6 +29,17 @@ export default function SignUp() {
     const [lastNameError, setLastNameError] = useState(false);
     const [existLogin, setExistLogin] = useState(false);
 
+
+    useEffect(() => {
+        async function existLogin() {
+            const checked = await checkLogin(login);
+            setExistLogin(checked);
+        }
+        if (login !== '') {
+            existLogin().catch(error => console.error(error));
+        }
+    }, [login])
+
     const handlePasswordChange = (event) => {
         const value = event.target.value;
         setPasswordError(value === '');
@@ -37,10 +48,6 @@ export default function SignUp() {
 
     const handleLoginChange = async (event) => {
         const value = event.target.value;
-        if (value !== '') {
-            const checked = await checkLogin(value);
-            setExistLogin(checked);
-        }
         setLoginError(value === '');
         setLogin(value);
     };
