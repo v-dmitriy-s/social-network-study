@@ -11,7 +11,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function AddUser({ onAgree, onClose, friend, open }) {
+export default function AgreeDialog({ text, onAgree, onClose, user, open }) {
 
     return (
         <Dialog
@@ -21,10 +21,10 @@ export default function AddUser({ onAgree, onClose, friend, open }) {
             aria-labelledby="alert-dialog-slide-title"
             aria-describedby="alert-dialog-slide-description"
             open={open}>
-            <DialogTitle id="alert-dialog-slide-title">{"Do you want to add this user?"}</DialogTitle>
+            <DialogTitle id="alert-dialog-slide-title">{text}</DialogTitle>
             <DialogContent>
                 <DialogContentText id="alert-dialog-slide-description">
-                    {friend && `${friend.firstName} ${friend.lastName}`}
+                    {user && `${user.firstName} ${user.lastName}`}
                 </DialogContentText>
             </DialogContent>
             <DialogActions>

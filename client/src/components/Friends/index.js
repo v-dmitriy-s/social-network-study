@@ -15,7 +15,7 @@ import {useHistory} from "react-router-dom";
 import {Box} from "@material-ui/core";
 import Typography from '@material-ui/core/Typography';
 import {addFriend, getFriends, getUnknownUsers, removeFriend} from "../../rest";
-import AddUser from "../AddUser";
+import AgreeDialog from "../AgreeDialog";
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import DeleteIcon from '@material-ui/icons/Delete';
 import IconButton from '@material-ui/core/IconButton';
@@ -175,10 +175,11 @@ export default function Friends({userId}) {
                     </List>
                 </Grid>
             </Grid>
-            <AddUser open={openAddUser}
-                     friend={selectedAddUser}
-                     onAgree={onAgreeAddUser}
-                     onClose={onCloseAddUser}/>
+            <AgreeDialog text={"Do you want to add this user?"}
+                         open={openAddUser}
+                         user={selectedAddUser}
+                         onAgree={onAgreeAddUser}
+                         onClose={onCloseAddUser}/>
         </React.Fragment>
     );
 }

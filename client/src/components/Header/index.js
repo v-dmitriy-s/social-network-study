@@ -11,9 +11,11 @@ import ExitToApp from '@material-ui/icons/ExitToApp';
 import Edit from '@material-ui/icons/Edit';
 import Delete from '@material-ui/icons/Delete';
 import Home from '@material-ui/icons/Home';
-import {clearToken} from "../../rest";
+import {addFriend, clearToken} from "../../rest";
 import {useHistory} from "react-router-dom";
 import {AuthContext} from "../../providers/AuthProvider";
+import AgreeDialog from "../AgreeDialog";
+import {decodeId, ERROR, SUCCESS} from "../../utils";
 
 export default function Header({onHome, onEdit, onDelete}) {
     const history = useHistory();
@@ -22,6 +24,7 @@ export default function Header({onHome, onEdit, onDelete}) {
     const [anchorEl, setAnchorEl] = useState(null);
     const [auth,] = useContext(AuthContext);
     const [currentUserId, setCurrentUserId] = useState(null);
+    const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
     useEffect(() => {
         if (auth.currentUser) {
@@ -50,7 +53,7 @@ export default function Header({onHome, onEdit, onDelete}) {
     };
 
     const handleAccountMenuDelete = () => {
-        onDelete();
+        setDeleteDialogOpen(true);
         setAnchorEl(null);
     };
 
@@ -98,6 +101,15 @@ export default function Header({onHome, onEdit, onDelete}) {
         </Menu>
     );
 
+    function onAgreeDeleteUser() {
+        onDelete();
+        setDeleteDialogOpen(false);
+    }
+
+    function onCloseDeleteUser() {
+        setDeleteDialogOpen(false);
+    }
+
     return (
         <Container component="header" className={classes.root}>
             <Typography variant={"overline"}  className={classes.login}>
@@ -114,6 +126,11 @@ export default function Header({onHome, onEdit, onDelete}) {
                 <AccountCircle />
             </IconButton>
             {renderMenu}
+            <AgreeDialog text={"Do you want to delete current user?"}
+                         open={deleteDialogOpen}
+                         friend={auth.currentUser}
+                         onAgree={onAgreeDeleteUser}
+                         onClose={onCloseDeleteUser}/>
         </Container>
     );
 }
