@@ -115,6 +115,28 @@ func GetFriends(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+/* Get all users by search string */
+func GetFullUsers(w http.ResponseWriter, r *http.Request) {
+	queryParams := r.URL.Query()
+	querySearch, ok := queryParams["search"]
+	var search = ""
+	if ok || len(querySearch) > 0 {
+		search = querySearch[0]
+	}
+	friends, err := FetchFullUsers(search)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Add("Content-Type", "application/json")
+	err = json.NewEncoder(w).Encode(friends)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+}
+
 /* Get unknown users by user id and search string */
 func GetUnknownUsers(w http.ResponseWriter, r *http.Request) {
 	queryParams := r.URL.Query()

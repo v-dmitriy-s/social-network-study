@@ -122,8 +122,8 @@ func FetchFriends(id int, search string) ([]*Friend, error) {
 	db := config.DataBase()
 	var str strings.Builder
 	if search != "" {
-		str.WriteString("AND (LOWER(u.firstName) LIKE '%" + strings.ToLower(search) + "%' ")
-		str.WriteString("OR LOWER(u.lastName) LIKE '%" + strings.ToLower(search) + "%')")
+		str.WriteString("AND (LOWER(u.firstName) LIKE '" + strings.ToLower(search) + "%' ")
+		str.WriteString("OR LOWER(u.lastName) LIKE '" + strings.ToLower(search) + "%')")
 	}
 	rows, err := db.Query(fmt.Sprintf(`SELECT id, firstName, lastName, city 
 								  FROM users u LEFT JOIN friends f ON u.id = f.user_id 
@@ -148,18 +148,49 @@ func FetchFriends(id int, search string) ([]*Friend, error) {
 	return friends, nil
 }
 
+/* Get all users by search string */
+func FetchFullUsers(search string) ([]*Friend, error) {
+	db := config.DataBase()
+	var str strings.Builder
+	if search != "" {
+		str.WriteString("lower(firstName) LIKE '" + strings.ToLower(search) + "%' ")
+		str.WriteString("OR lower(lastName) LIKE '" + strings.ToLower(search) + "%'")
+	}
+	rows, err := db.Query(fmt.Sprintf(`SELECT id, firstName, lastName 
+								  FROM users WHERE %s ORDER BY id LIMIT 100`, str.String()))
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	friends := make([]*Friend, 0)
+	for rows.Next() {
+		friend := new(Friend)
+		err = rows.Scan(&friend.ID, &friend.FirstName, &friend.LastName, &friend.City)
+		if err != nil {
+			return nil, err
+		}
+		friend.IsNew = true
+		friends = append(friends, friend)
+	}
+	if err = rows.Err(); err != nil {
+		return nil, err
+	}
+	return friends, nil
+}
+
 /* Get unknown users by user id and search string */
 func FetchUnknownUsers(id int, search string) ([]*Friend, error) {
 	db := config.DataBase()
 	var str strings.Builder
 	if search != "" {
-		str.WriteString("AND (lower(u.firstName) LIKE '%" + strings.ToLower(search) + "%' ")
-		str.WriteString("OR lower(u.lastName) LIKE '%" + strings.ToLower(search) + "%')")
+		str.WriteString("lower(firstName) LIKE '" + strings.ToLower(search) + "%' ")
+		str.WriteString("OR lower(lastName) LIKE '" + strings.ToLower(search) + "%'")
 	}
 	rows, err := db.Query(fmt.Sprintf(`SELECT id, firstName, lastName, city 
-								  FROM users u WHERE u.id <> ? %s and u.id not in 
+								  FROM users WHERE %s AND id <> ? AND id not in 
                                   (SELECT u.id FROM users u INNER JOIN friends f on u.id = f.user_id 
-	                              WHERE f.friend_id = ?)`, str.String()), id, id)
+	                              WHERE f.friend_id = ?) limit 100`, str.String()), id, id)
 	if err != nil {
 		return nil, err
 	}

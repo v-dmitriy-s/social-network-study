@@ -38,6 +38,7 @@ func main() {
 	api.HandleFunc("/users/{id}", user.DeleteUser).Methods("DELETE")
 	api.HandleFunc("/users", user.UpdateUser).Methods("PUT")
 	api.HandleFunc("/friends/unknown", user.GetUnknownUsers).Methods("GET")
+	api.HandleFunc("/friends/full", user.GetFullUsers).Methods("GET")
 	api.HandleFunc("/friends", user.GetFriends).Methods("GET")
 	api.HandleFunc("/friends", user.PostAddFriend).Methods("POST")
 	api.HandleFunc("/friends", user.DeleteFriend).Methods("DELETE")
