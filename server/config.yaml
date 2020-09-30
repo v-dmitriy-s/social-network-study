@@ -6,7 +6,8 @@ server:
 database:
   user: root
   pass: root
-  host: mysql-db
-  port: 3306
+  hosts:
+#    - mysql-db-slave-1:3306
+    - mysql-db:3306
   name: social_network
 

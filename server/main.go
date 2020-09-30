@@ -14,8 +14,8 @@ import (
 func main() {
 	cfg := config.InitConfig()
 	log.Printf("%+v", cfg)
-	dataBase := config.ConnectDataBase(cfg)
-	defer dataBase.Close()
+	config.ConnectDataBase(cfg)
+	defer config.CloseDataBase()
 
 	router := mux.NewRouter()
 	allowHeaders := []string{"Accept", "Content-Type", "Content-Length", "Accept-Encoding", "X-CSRF-Token", "Authorization", "If-Modified-Since"}

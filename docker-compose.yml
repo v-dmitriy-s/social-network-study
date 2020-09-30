@@ -6,8 +6,6 @@ services:
     ports:
       - "8080:8080"
     restart: on-failure
-    volumes:
-      - api:/usr/src/app/
     depends_on:
       - mysql-db
     networks:
@@ -16,6 +14,7 @@ services:
   mysql-db:
     image: mysql:5.7
     container_name: mysql-db
+    hostname: mysql-db
     ports:
       - 3306:3306
     environment:
@@ -26,12 +25,33 @@ services:
       - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
     volumes:
       - database_mysql:/var/lib/mysql
+      - ./config/mysql-master/mysql.conf.cnf:/etc/mysql/mysql.conf.d/mysql.conf.cnf
     networks:
       - social-network
 
+  mysql-db-slave-1:
+    image: mysql:5.7
+    container_name: mysql-db-slave-1
+    hostname: mysql-db-slave-1
+    ports:
+      - 3380:3306
+    environment:
+      - MYSQL_ROOT_HOST=${DB_HOST_SLAVE}
+      - MYSQL_USER=${DB_USERNAME}
+      - MYSQL_PASSWORD=${DB_PASSWORD}
+      - MYSQL_DATABASE=${DB_NAME}
+      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
+    volumes:
+      - database_mysql_slave_1:/var/lib/mysql
+      - ./config/mysql-slave-1/mysql.conf.cnf:/etc/mysql/mysql.conf.d/mysql.conf.cnf
+    networks:
+      - social-network
+    depends_on:
+      - mysql-db
+
 volumes:
-  api:
   database_mysql:
+  database_mysql_slave_1:
 
 # Networks to be created to facilitate communication between containers
 networks:
