@@ -24,7 +24,8 @@ services:
       - MYSQL_DATABASE=${DB_NAME}
       - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
     volumes:
-      - database_mysql:/var/lib/mysql
+      - ./data/mysql-db:/var/lib/mysql
+      - ./logs/mysql-db:/var/log/mysql
       - ./config/mysql-master/mysql.conf.cnf:/etc/mysql/mysql.conf.d/mysql.conf.cnf
     networks:
       - social-network
@@ -36,22 +37,41 @@ services:
     ports:
       - 3380:3306
     environment:
-      - MYSQL_ROOT_HOST=${DB_HOST_SLAVE}
+      - MYSQL_ROOT_HOST=${DB_HOST_SLAVE_1}
       - MYSQL_USER=${DB_USERNAME}
       - MYSQL_PASSWORD=${DB_PASSWORD}
       - MYSQL_DATABASE=${DB_NAME}
       - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
     volumes:
-      - database_mysql_slave_1:/var/lib/mysql
+      - ./data/mysql-slave-1:/var/lib/mysql
+      - ./logs/mysql-slave-1:/var/log/mysql
       - ./config/mysql-slave-1/mysql.conf.cnf:/etc/mysql/mysql.conf.d/mysql.conf.cnf
     networks:
       - social-network
     depends_on:
       - mysql-db
 
-volumes:
-  database_mysql:
-  database_mysql_slave_1:
+  mysql-db-slave-2:
+    image: mysql:5.7
+    container_name: mysql-db-slave-2
+    hostname: mysql-db-slave-2
+    ports:
+      - 3381:3306
+    environment:
+      - MYSQL_ROOT_HOST=${DB_HOST_SLAVE_2}
+      - MYSQL_USER=${DB_USERNAME}
+      - MYSQL_PASSWORD=${DB_PASSWORD}
+      - MYSQL_DATABASE=${DB_NAME}
+      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
+    volumes:
+      - ./data/mysql-slave-2:/var/lib/mysql
+      - ./logs/mysql-slave-2:/var/log/mysql
+      - ./config/mysql-slave-2/mysql.conf.cnf:/etc/mysql/mysql.conf.d/mysql.conf.cnf
+    networks:
+      - social-network
+    depends_on:
+      - mysql-db
+
 
 # Networks to be created to facilitate communication between containers
 networks:

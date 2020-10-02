@@ -7,6 +7,7 @@ database:
   user: root
   pass: root
   hosts:
+#    - mysql-db-slave-2:3306
 #    - mysql-db-slave-1:3306
     - mysql-db:3306
   name: social_network

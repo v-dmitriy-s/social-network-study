@@ -27,8 +27,9 @@ with connection.cursor() as cursor:
             '1988-01-01'
         )
         cursor.execute(insert)
-        if i % 100:
-            connection.commit()
+        # if i % 100:
+        connection.commit()
+        print(i)
 
 connection.commit()
 connection.close()
