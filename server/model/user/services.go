@@ -154,7 +154,7 @@ func FetchFullUsers(search string) ([]*Friend, error) {
 	var str strings.Builder
 	if search != "" {
 		str.WriteString("lower(firstName) LIKE '" + strings.ToLower(search) + "%' ")
-		str.WriteString("OR lower(lastName) LIKE '" + strings.ToLower(search) + "%'")
+		str.WriteString("AND lower(lastName) LIKE '" + strings.ToLower(search) + "%'")
 	}
 	rows, err := db.Query(fmt.Sprintf(`SELECT id, firstName, lastName 
 								  FROM users WHERE %s ORDER BY id LIMIT 100`, str.String()))
@@ -166,7 +166,7 @@ func FetchFullUsers(search string) ([]*Friend, error) {
 	friends := make([]*Friend, 0)
 	for rows.Next() {
 		friend := new(Friend)
-		err = rows.Scan(&friend.ID, &friend.FirstName, &friend.LastName, &friend.City)
+		err = rows.Scan(&friend.ID, &friend.FirstName, &friend.LastName)
 		if err != nil {
 			return nil, err
 		}
