@@ -69,7 +69,7 @@ func readEnv(cfg *Config) {
 		cfg.Database.Password = dbPassword
 	}
 	if dbHost != "" {
-		cfg.Database.Hosts = append(cfg.Database.Hosts, fmt.Sprintf("%s:%s",dbHost, dbPort))
+		cfg.Database.Hosts = append(cfg.Database.Hosts[:0], fmt.Sprintf("%s:%s",dbHost, dbPort))
 	}
 	if dbName != "" {
 		cfg.Database.Name = dbName
