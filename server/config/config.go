@@ -3,6 +3,7 @@ package config
 import (
 	"fmt"
 	"gopkg.in/yaml.v2"
+	"log"
 	"os"
 )
 
@@ -33,6 +34,7 @@ application settings
 */
 func readConfigFile(cfg *Config) {
 	profile := os.Getenv("APP_PROFILE")
+	log.Printf("APP_PROFILE %+v", profile)
 	configFile := "config.yaml"
 	if profile != "" && profile != "default" {
 		configFile = fmt.Sprintf("config-%s.yaml", profile)
