@@ -25,6 +25,8 @@ Init configuration
 func InitConfig() *Config {
 	cfg := new(Config)
 	readConfigFile(cfg)
+	readEnv(cfg)
+	log.Printf("%+v", cfg)
 	return cfg
 }
 
@@ -33,13 +35,7 @@ Read configuration file for
 application settings
 */
 func readConfigFile(cfg *Config) {
-	profile := os.Getenv("APP_PROFILE")
-	log.Printf("APP_PROFILE %+v", profile)
-	configFile := "config.yaml"
-	if profile != "" && profile != "default" {
-		configFile = fmt.Sprintf("config-%s.yaml", profile)
-	}
-	f, err := os.Open(configFile)
+	f, err := os.Open("config.yaml")
 	if err != nil {
 		processError(err)
 	}
@@ -49,6 +45,34 @@ func readConfigFile(cfg *Config) {
 	err = decoder.Decode(&cfg)
 	if err != nil {
 		processError(err)
+	}
+}
+
+/**
+Read configuration enviroments
+*/
+func readEnv(cfg *Config) {
+	port := os.Getenv("PORT")
+	dbUsername := os.Getenv("DB_USERNAME")
+	dbPassword := os.Getenv("DB_PASSWORD")
+	dbHost := os.Getenv("DB_HOST")
+	dbPort := os.Getenv("DB_PORT")
+	dbName := os.Getenv("DB_NAME")
+
+	if port != "" {
+		cfg.Server.Port = port
+	}
+	if dbUsername != "" {
+		cfg.Database.Username = dbUsername
+	}
+	if dbPassword != "" {
+		cfg.Database.Password = dbPassword
+	}
+	if dbHost != "" {
+		cfg.Database.Hosts = append(cfg.Database.Hosts, fmt.Sprintf("%s:%s",dbHost, dbPort))
+	}
+	if dbName != "" {
+		cfg.Database.Name = dbName
 	}
 }
 
