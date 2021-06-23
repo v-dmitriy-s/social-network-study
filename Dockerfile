@@ -14,7 +14,8 @@ RUN GENERATE_SOURCEMAP=false yarn build
 # Final stage build, this will be the container
 # that we will deploy to production
 FROM alpine:latest
-ENV PORT 8080
+ENV PORT=8080
+ARG APP_PROFILE="default"
 RUN apk --no-cache add ca-certificates
 COPY --from=go_builder /main ./
 COPY --from=go_builder /app/server/config.yaml ./

@@ -32,7 +32,12 @@ Read configuration file for
 application settings
 */
 func readConfigFile(cfg *Config) {
-	f, err := os.Open("config.yaml")
+	profile := os.Getenv("APP_PROFILE")
+	configFile := "config.yaml"
+	if profile != "" && profile != "default" {
+		configFile = fmt.Sprintf("config-%s.yaml", profile)
+	}
+	f, err := os.Open(configFile)
 	if err != nil {
 		processError(err)
 	}
